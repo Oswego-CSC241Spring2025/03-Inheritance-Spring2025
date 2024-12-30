@@ -10,91 +10,91 @@ Follow the specification below and make the necessary changes and additions.
 ## Specification
 
 ### Customer
-This class represents a person using the system. Implement each of these methods:
+This class represents a customer visiting the restaurant. Implement each of these methods:
+
 - A constructor that initializes the last name and first name
 - getLastName() - Returns a String that is the customer’s last name
 - getFirstName() - Returns a String that is the customer’s first name
-- getBuilding() - Returns a reference to the Building object (see below) associated with this customer
-- setBuilding(Building) - Sets the Building for this customer
+- getOrder() - Returns a reference to the Order object associated with this customer
+- setOrder(Order) - Sets the Order for this customer
 
-### Building
+### Order
 This class becomes `abstract`. It will be used later in an inheritance relationship
-with two new classes, `CommercialBuilding` and `Residence`. These are the required
+with two new classes, `DineIn` and `DriveThrough`. These are the required
 methods:
-- A constructor that initializes the name, longitude, latitude, and Customer. It
- should also associate the new Building object with the given Customer. If the Customer
- parameter is not defined, it should throw an `IllegalArgumentException`
-- getName() - returns a String that is the name of the building
-- getLongitude() - returns a double that is the building's longitude
-- getLatitude() - returns a double that is the building's latitude
+- A constructor that initializes the orderType, orderNum, orderTime and customer. It
+  should also associate the new Order object with the given Customer. If the Customer
+  parameter is not defined, it should throw an `IllegalArgumentException`
+- getOrderType() - returns a String representing the type of the order
+- getOrderNum() - returns a String that is the order's order number
+- getOrderTime() - Returns a reference to LocalDateTime object that is the time an order is placed
 - getCustomer() - Returns a reference to the Customer object associated with this building
-- addRoom(Room) - Adds a Room object reference to a building
-- getRooms() - Returns an array of Room objects associated with a building
+- addItem(Item) - Adds an Item object reference to an order
+- getItems() - Returns an array of Item objects associated with an order
 
-### CommercialBuilding
-This new class is subclass of `Building` and represents buildings that are 
-commercial in nature. Such buildings will have an additional instance variable 
-called `contactInfo` used to store the contact information for the building manager.
+### DineIn
+This new class is subclass of `Order` and represents dine-in orders. Such orders will have an additional instance variable
+called `tableNum` used to store the table number of the customer.
 These are the required methods:
-- The constructor should add a new `contactInfo` parameter to those needed by the 
-parent constructor.
-- getContactInfo() - Returns a String that is the contact info
+- The constructor should add a new `table` parameter to those needed by the
+  parent constructor.
+- getTableNum() - Returns an int that is the table number of the customer
 
-### Residence
-This new class is a subclass of `Building` and represents residences. It
-should merely extend the `Building` class and implement the constructor, as needed.
+### DriveThrough
+This new class is a subclass of `Order` and represents drive-through orders. It
+should merely extend the `Order` class and implement the constructor, as needed.
 
-### Room
-This class represents a room in a Building. Here are the required methods:
-- A constructor that initializes the name, floor, and Building. It
- should also associate the new Room object to the given Building. If the
-Building parameter is not defined, it should throw an IllegalArgumentException
-- getName() - Returns a String that is the room name
-- getFloor() - Returns a String that is the room's floor within the building
-- getBuilding() - Returns a reference to the associated Building object
-- addDevice(Device) - Add a Device (see below) to this room 
-- getDevices() - Returns an array of Device object references
 
-### Device
+### Item
 This class becomes `abstract`. It will be used later in an inheritance relationship
-with two new classes, `LightSwitch` and `Thermostat`. Here is the updated set of required methods:
-- The constructor uses parameters to initialize id, room, and location. The
-initial state should be set to false (off), and the initial Readings collection
-should be empty. It should also add the new Device object to the specified Room. 
-If the Room parameter is not defined, it should throw an `IllegalArgumentException`
-- getId() - Returns a String that is the sensor device identifier
-- getRoom() - Returns a reference to the Room where the sensor is located
-- getLocation() - Returns a String indicating where in the Room the device was placed
-- getState() - Returns a boolean that is the state of the device
-- setState(boolean) - Updates the state of the device
-- getReadings() - Returns an array of readings
-- addReading() - This method adds a new reading to the collection. If the
-  collection has reached 5 readings, remove the oldest reading before adding the new one
+with two new classes, `Burger` and `Coffee`. These are the required
+methods:
+- A constructor that initializes the type, order, name and quantity. It
+  should also associate the new Item object to the given Order. If the
+  Order parameter is not defined, it should throw an IllegalArgumentException
+- getType() - Returns a String that is the type of an item
+- getOrder() - Return a reference to the Order object associated with this Item
+- getName() - Returns a String that is the name of an item
+- getQuantity() - Returns an int that is the number of item ordered
+- addIngredient(Ingredient) - Add an Ingredient to this Item. If the
+  collection has reached 5 Ingredients, remove the oldest ingredient before adding the new one
+- getIngredients() - Returns an array of Ingredient object references
 
-### LightSwitch
-This new class represents a light switch that can be turned on or off. It is a subclass
-of `Device`. Here are its required methods:
-- A constructor defined by the requirements of the parent constructor
-- turnOn() - sets the state of the device to on (true)
-- turnOff() - sets the state of the device to off (false)
+### Burger
+This new class is a subclass of `Item` and represents a burger in the order. It
+should merely extend the `Item` class and implement the constructor, as needed.
 
-### Thermostat
-This new class represents a thermostat that can read room temperature. It is a 
-subclass of `Device`. Here are the required methods:
-- The constructor is defined by the requirements of the 
-parent and should set the state of the device to true (on)
-- getCurrentReading() - Returns the most recently added Reading
+### Coffee
+This new class represents a cup of coffee in the order. It is a subclass
+of `Item`. It will have an additional instance variable called `size` used to store the size of the coffee.
+Here are its required methods:
+- The constructor should add a new `size` parameter to those needed by the
+  parent constructor.
+- getSize() - Returns a String that is the size of the coffee
 
-### Reading
-This class represents a reading produced by a device. These are the required methods:
-- A constructor method that initializes the Device, units, and value, and sets the 
-timestamp to the current system time. It should also add the new Reading to the 
-specified Device. If the Device parameter is undefined, it should throw an `IllegalArgumentException`
-- getDevice() - returns a reference to the Device that produced the reading
+
+### Ingredient
+This class represents an Ingredient. It is asscoiated with an Item and multiple Nutrition.
+- A constructor that initializes item, name, customized and calorie. It
+  should also associate the new Ingredient object to the given Item. If the
+  Item parameter is not defined, it should throw an IllegalArgumentException
+- getName() - Returns a String that is the name of the Ingredient
+- getCustomized() - Returns a String that is for customized option of the ingredient
+- getItem() - Returns a reference to the Item
+- getCalorie() - Returns a double showing the calorie of the ingredient
+- addNutrition(Nutrition) - Adds a Nutrition to an Ingredient
+- getNutritions() - Returns an array of Nutrition objects
+
+
+### Nutrition
+This class represents the Nutrition included in an ingredient
+- A constructor method that initializes the Ingredient, name, units,and amount. It
+  should also associate the new Nutrition object to the given Ingredient. If the
+  Ingredient parameter is not defined, it should throw an IllegalArgumentException
+- getIngredient() - returns a reference to the Ingredient that contains this nutrition.
 - getUnits() - returns a String representing the units of measurement
-- getValue() - returns a double corresponding to the reading's value
-- getTimestamp() - Returns a reference to `LocalDateTime` object that is the timestamp of the reading
+- getAmount() - returns a double corresponding to the nutrition's value
+- getName() - Returns String representing the name of the nutrition
 
 ## Testing
-When you push your code back to your repository, GitHub will initiate a series of
-tests to verify the correct operation of each of the required methods.
+When you push your code back to your repository, GitHub will initiate a series of tests to verify the correct operation of each of the methods above.
